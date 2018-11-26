@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bdqn.dao.entry.EntryDao">
+    <select id="GetAllEntry" resultType="Entry" >
+      SELECT id,categoryId,title,summary,uploaduser,createdate FROM edoc_entry
+    </select>
+    <resultMap id="entryList" type="Entry">
+        <id property="id" column="id"></id>
+        <result property="title" column="title"></result>
+        <result property="summary" column="summary"></result>
+        <result property="uploaduser" column="uploaduser"></result>
+        <result property="createdate" column="createdate"></result>
+        <result property="name" column="name"></result>
+    </resultMap>
+
+
+    <select id="GetEntryByCategoryId" resultMap="entryList">
+      SELECT e.id,c.name,title,summary,uploaduser,createdate FROM edoc_entry e,edoc_category c
+        WHERE categoryId=c.id AND c.name LIKE CONCAT('%',#{name},'%')
+
+    </select>
+    <delete id="dropEntry">
+        DELETE FROM edoc_entry WHERE id=#{id}
+    </delete>
+</mapper>
